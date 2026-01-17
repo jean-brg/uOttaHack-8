@@ -1,13 +1,3 @@
-const models = [
-    "xiaomi/mimo-v2-flash:free",
-    //"openai/gpt-5.2",
-    //"deepseek/deepseek-v3.2",
-    //"google/gemini-3-flash-preview",
-    //"anthropic/claude-sonnet-4.5",
-    "openai/gpt-oss-120b:free",
-    "meta-llama/llama-3.1-405b-instruct:free"
-];
-
 async function promptRequest(prompt, model='xiaomi/mimo-v2-flash:free', constraints='Use only one sentence to respond.') {
     // Prompt an AI model with a request using the Python backend
     return await fetch(
@@ -47,8 +37,7 @@ async function getData() {
 }
 
 async function promptAllModels(prompt, constraints='Use only one sentence to respond.') {
-    s = Date.now()
-    response = await fetch(
+    return await fetch(
         'http://127.0.0.1:5000/api/prompt-all',
         {
             method: "POST",
@@ -58,14 +47,5 @@ async function promptAllModels(prompt, constraints='Use only one sentence to res
                 constraints
             })
         }
-    ).then(
-        resp => resp.json()
-    )
-    .then(
-        data => {
-            console.log(data);
-            document.querySelector("#display").innerText += data.message + "\n\n\n"
-        }
-    );
-    console.log(`Time: ${(Date.now() - s)/1000}s`)
+    ).then(resp => resp.json())
 }

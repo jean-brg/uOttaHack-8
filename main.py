@@ -9,7 +9,7 @@ import time
 # Threads
 import threading
 # AI agent
-from google import genai
+# from google import genai
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
@@ -19,7 +19,7 @@ class LessonPlan(BaseModel):
 
 DOTENV_PATH = './.env'
 OPENROUTER_API_KEY = dotenv.get_key(dotenv_path=DOTENV_PATH, key_to_get="OPENROUTER_API_KEY")
-GEMINI_API_KEY = dotenv.get_key(dotenv_path=DOTENV_PATH, key_to_get="GEMINI_API_KEY")
+# GEMINI_API_KEY = dotenv.get_key(dotenv_path=DOTENV_PATH, key_to_get="GEMINI_API_KEY")
 
 MODELS = [
     "xiaomi/mimo-v2-flash:free",
@@ -30,11 +30,11 @@ MODELS = [
     # "google/gemini-3-flash-preview",
     # "anthropic/claude-sonnet-4.5",
     "openai/gpt-oss-120b:free",
-    "meta-llama/llama-3.1-405b-instruct:free"
+    "allenai/molmo-2-8b:free"
 ]
 
 # Gemini client will be used for overall research and management
-gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+# gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
 # APP INIT
 app = Flask(__name__)
@@ -176,15 +176,15 @@ def promptAll():
         
         # Append the processed data
         responseArray.append({
-            "model": model,
             "message": text,
-            "success": success,
-            "tokens": tokens,
-            "start_time": init_time,
-            "end_time": time.time()
+            "tokens": tokens
         })
 
-    return jsonify(responseArray)
+    return jsonify({
+        "questions": [response["message"] for response in responseArray],
+        "total_tokens": sum([response["tokens"] for response in responseArray]),
+        "total_time": time.time() - init_time
+    })
 
 # RUNNER
 if __name__ == "__main__":
