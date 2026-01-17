@@ -123,12 +123,31 @@ body {
     pointer-events: none;
     z-index: 999;
 }
-
-#transition.active {
-    animation: pixelFade 0.6s ease forwards;
+/* Fade out overlay */
+#transition.fade-out {
+    animation: fadeOut 0.6s ease forwards;
 }
 
-@keyframes pixelFade {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+/* Fade in overlay */
+#transition.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeOut {
+    from { opacity: 0; transform: scale(1); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(1); }
+}
+
+.door.vanish {
+    animation: doorVanish 0.6s easex1 forwards;
+}
+
+@keyframes doorVanish {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0); }
 }

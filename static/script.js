@@ -8,18 +8,28 @@ async function getData() {
         console.error('Error fetching data:', error);
     }
 }
-
 function enterDoor() {
     const transition = document.getElementById("transition");
+    const door = document.querySelector(".door");
+    const btn = document.querySelector(".door-btn");
 
-    // Fade out
-    transition.classList.add("active");
+    btn.disabled = true;
+
+    // Start fade overlay
+    transition.classList.add("fade-out");
+
+    // door vanish 
+    door.classList.add("vanish");
 
     setTimeout(() => {
+        // Swap content behind the door
+        document.querySelector(".door-title").innerText = "ROOM 2";
+        document.getElementById("display").innerText = "You entered a new room!";
         document.body.style.backgroundColor = "#2a2a2a";
-        document.querySelector(".door-title").innerText = "";
-        document.getElementById("display").innerText = "New screen";
-        // fade in 
-        transition.classList.remove("active");
+
+        // Fade overlay back in
+        transition.classList.remove("fade-out");
+        transition.classList.add("fade-in");
+
     }, 600);
 }
