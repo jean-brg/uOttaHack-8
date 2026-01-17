@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
     <title>Teacher AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Home Page</h1>
+    <div class="door">
+        <h1 class="door-title">Teacher AI</h1>
 
-    <button onclick="getData()">Get Data</button>
+        <button class="door-btn" onclick="getData()">BEGIN</button>
 
-    <p id="display"></p>
+        <p id="display"></p>
+    </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
