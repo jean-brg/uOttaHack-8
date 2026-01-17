@@ -7,9 +7,23 @@
 <body>
     <h1>Welcome to the Home Page</h1>
 
-    <button onclick="getData()">Get Data</button>
+    <p>Lesson Topic:</p>
+    <input type="text" id="lesson_topic" name="lesson_topic" value="Carbon atoms in chemistry"/>
 
-    <p id="display"></p>
+    <div style="height: 1.5rem;"></div>
+
+    <p>Lesson Topic:</p>
+    <textarea id="lesson_content" name="lesson_content" rows="10" cols="50">
+        Carbon atoms have 6 valence electrons (2 in their first shell and 4 in their second). Since the second shell can have 8 electrons, the carbon's valence, or exterior, is only half full, allowing for many bonding opportunities.
+    </textarea>
+
+    <div style="height: 1.5rem;"></div>
+    
+    <button onclick="submitLesson()">SEND &rarr;</button>
+
+    <img src="https://i.pinimg.com/originals/0f/2f/b4/0f2fb4fd7f75e3bf4175f7f8e5752f0c.gif" alt="Loading gif" id="loading" style="display: none; margin: auto;">
+
+    <div id="questions"></div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

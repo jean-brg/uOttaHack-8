@@ -10,7 +10,7 @@ import time
 import threading
 from concurrent.futures import ThreadPoolExecutor
 # AI agent
-# from google import genai
+from google import genai
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
@@ -20,7 +20,7 @@ class LessonPlan(BaseModel):
 
 DOTENV_PATH = './.env'
 OPENROUTER_API_KEY = dotenv.get_key(dotenv_path=DOTENV_PATH, key_to_get="OPENROUTER_API_KEY")
-# GEMINI_API_KEY = dotenv.get_key(dotenv_path=DOTENV_PATH, key_to_get="GEMINI_API_KEY")
+GEMINI_API_KEY = dotenv.get_key(dotenv_path=DOTENV_PATH, key_to_get="GEMINI_API_KEY")
 
 MODELS = [
     "xiaomi/mimo-v2-flash:free",
@@ -35,7 +35,7 @@ MODELS = [
 ]
 
 # Gemini client will be used for overall research and management
-# gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
 # APP INIT
 app = Flask(__name__)
