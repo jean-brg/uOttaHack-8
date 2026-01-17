@@ -11,6 +11,8 @@ async function getData() {
 function enterDoor() {
     const transition = document.getElementById("transition");
     const door = document.querySelector(".door");
+    document.getElementById("whiteboard-text").style.display = "block";
+
     const btn = document.querySelector(".door-btn");
     const roomImage = document.getElementById("room-image");
 
