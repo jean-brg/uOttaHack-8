@@ -8,6 +8,7 @@ import requests, json
 import time
 # Threads
 import threading
+from concurrent.futures import ThreadPoolExecutor
 # AI agent
 # from google import genai
 from pydantic import BaseModel, Field
@@ -143,9 +144,7 @@ def promptAll():
     prompt = args.get('prompt')
     constraints = args.get('constraints')
 
-    responseArray = []
-
-    for model in MODELS:
+    def query_model(model):
         response = requests.post(
             url="https://openrouter.ai/api/v1/chat/completions",
             headers={
@@ -167,18 +166,19 @@ def promptAll():
         # Extract relevant data similar to execute_prompt()
         if 'choices' in responsedict and len(responsedict['choices']) > 0 and 'message' in responsedict['choices'][0]:
             text = responsedict['choices'][0]['message'].get('content', 'No content')
-            success = True
             tokens = responsedict.get('usage', {}).get('total_tokens', 0)
         else:
-            success = False
             text = responsedict.get('error', {}).get('message', 'Something went wrong')
             tokens = 0
         
-        # Append the processed data
-        responseArray.append({
+        return {
             "message": text,
             "tokens": tokens
-        })
+        }
+
+    # Use ThreadPoolExecutor to run all requests concurrently
+    with ThreadPoolExecutor(max_workers=len(MODELS)) as executor:
+        responseArray = list(executor.map(query_model, MODELS))
 
     return jsonify({
         "questions": [response["message"] for response in responseArray],
