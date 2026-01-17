@@ -1,0 +1,18 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* BODY */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* HEADER */
+h1 {
+    color: #333;
+}
