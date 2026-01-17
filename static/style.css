@@ -144,7 +144,7 @@ body {
 }
 
 .door.vanish {
-    animation: doorVanish 0.6s easex1 forwards;
+    animation: doorVanish 0.6s ease forwards;
 }
 
 @keyframes doorVanish {

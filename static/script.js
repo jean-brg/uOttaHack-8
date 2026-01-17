@@ -18,7 +18,6 @@ function enterDoor() {
     // Start fade overlay
     transition.classList.add("fade-out");
 
-    // door vanish 
     door.classList.add("vanish");
 
     setTimeout(() => {
@@ -31,5 +30,7 @@ function enterDoor() {
         transition.classList.remove("fade-out");
         transition.classList.add("fade-in");
 
+        // Re-enable button after fade-in
+        setTimeout(() => btn.disabled = false, 600);
     }, 600);
 }
