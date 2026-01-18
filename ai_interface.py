@@ -10,25 +10,56 @@ import time
 # AI agent
 from google import genai
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List
 
 DOTENV_PATH = './.env'
 OPENROUTER_API_KEY = dotenv.get_key(dotenv_path=DOTENV_PATH, key_to_get="OPENROUTER_API_KEY")
 GEMINI_API_KEY = dotenv.get_key(dotenv_path=DOTENV_PATH, key_to_get="GEMINI_API_KEY")
 
+# The JSON format for a lesson plan
 class LessonPlan(BaseModel):
     # The lesson plan name
     subtopics: List[str] = Field(description="The lesson's subtopics, e.g. what needs to be taught for the topic to be understood")
 
+class AIModelDefinition:
+    def __init__(self, name: str, temperature: int):
+        self.name = name
+        self.temperature = temperature
+
+    def __repr__(self):
+        return '<AIModelDefinition: ' + (self.name) + ' @ ' + (self.temperature) + '>'
+    
+    def getName(self):
+        return self.name
+    
+    def prompt(self, message:str, constraints=None):
+        '''Prompts the AI model using its inherant temperature value'''
+        return prompt_AI(prompt=message, constraints=constraints, model=self.name, service="openrouter", temperature=self.temperature)
+    
 # Gemini client for gemini api calls
 gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
-def prompt_AI(prompt:str, constraints, model="google/gemini-2.0-flash-lite-001", service="openrouter", temperature=0) -> dict:
+def prompt_AI(prompt:str, constraints=None, model="google/gemini-2.0-flash-lite-001", service="openrouter", temperature=0) -> dict:
+    '''
+    Prompt any AI using openrouter or the Gemini API (coming soon). 
+    The result will be returned as a JSON-compatiable dict. 
+    '''
     init_time = int(time.time()) # get the initial call time
     error_info = 'Something went wrong.'
 
     try:
         if(service == 'openrouter'):
+            messages = [
+                { "role": "user", "content": prompt },
+                { "role": "assistant", "content": '{' } # Encourage the AI to follow JSON syntax
+            ]
+
+            # Only include constraints if they are defined
+            if(not constraints is None):
+                messages.insert(0, { "role": "system", "content": constraints })
+
+            print(messages)
+
             # Query the OpenRouter API using requests
             response = requests.post(
                 url="https://openrouter.ai/api/v1/chat/completions",
@@ -38,11 +69,7 @@ def prompt_AI(prompt:str, constraints, model="google/gemini-2.0-flash-lite-001",
                 json={
                     "model": model,
                     "response_format": { "type": "json_object" },
-                    "messages": [
-                        { "role": "system", "content": constraints },
-                        { "role": "user", "content": prompt },
-                        { "role": "assistant", "content": "{" }
-                    ],
+                    "messages": messages,
                     "temperature": temperature,
                     "provider": {
                         'require_parameters': True
@@ -89,7 +116,7 @@ def prompt_AI(prompt:str, constraints, model="google/gemini-2.0-flash-lite-001",
             raise Exception('Gemini service is not supported at this time')
         else:
             raise Exception('Invalid service')
-    except FileExistsError: 
+    except BaseException: 
         return {
             'model': model,
             'start_time': init_time,
