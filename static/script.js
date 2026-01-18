@@ -19,6 +19,7 @@ function enterDoor() {
     btn.disabled = true;
 
     // Start fade overlay
+    transition.classList.remove("fade-in");
     transition.classList.add("fade-out");
 
     door.classList.add("vanish");
@@ -38,5 +39,31 @@ function enterDoor() {
 
         // Re-enable button after fade-in
         setTimeout(() => btn.disabled = false, 600);
+    }, 600);
+}
+
+function switchToClassroom() {
+    const transition = document.getElementById("transition");
+    const roomImage = document.getElementById("room-image");
+    const classroomImage = document.getElementById("classroom-image");
+    const whiteboardSvg = document.getElementById("whiteboard-svg");
+    const whiteboardText = document.getElementById("whiteboard-text");
+
+    // Start fade overlay
+    transition.classList.remove("fade-in");
+    transition.classList.add("fade-out");
+
+    setTimeout(() => {
+        // Swap to classroom
+        document.querySelector(".door-title").innerText = "ROOM 2";
+        document.getElementById("display").innerText = "You entered the classroom!";
+        roomImage.style.display = "none";
+        whiteboardSvg.style.display = "none";
+        whiteboardText.style.display = "none";
+        classroomImage.style.display = "block";
+
+        // Fade overlay back in
+        transition.classList.remove("fade-out");
+        transition.classList.add("fade-in");
     }, 600);
 }
