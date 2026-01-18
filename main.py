@@ -2,7 +2,7 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 # File and data management
-import time
+import time, json
 # Threads
 from concurrent.futures import ThreadPoolExecutor
 
@@ -107,6 +107,28 @@ def postLesson():
 
     questions = question_responses['questions']
     return jsonify(question_responses)
+
+@app.route('/api/get-questions', methods=["GET"])
+def getQuestions():
+    global questions
+    return jsonify(questions)
+
+@app.route('/api/post-answers', methods=["POST"])
+def postAnswers():
+    # Accepts an array of answers from the user, corresponding to the questions. The answers array must be equal in size to the questions array.
+    global questions
+    
+    args = request.get_json()
+    answers = args.get('answers')
+
+    print(questions)
+
+    for i in range(len(questions)):
+        q = json.loads(questions[i])
+        q['answer'] = answers[i]
+        questions[i] = json.dumps(q)
+    
+    return jsonify(questions)
 
 def query_lesson_overview():
     # Gemini, acting as an expert on the topic, will generate a lesson overview
