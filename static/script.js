@@ -48,6 +48,7 @@ function switchToClassroom() {
     const classroomImage = document.getElementById("classroom-image");
     const whiteboardSvg = document.getElementById("whiteboard-svg");
     const whiteboardText = document.getElementById("whiteboard-text");
+    const speechBubble = document.getElementById("speechBubble");
     // Start fade overlay
     transition.classList.remove("fade-in");
     transition.classList.add("fade-out");
@@ -60,6 +61,7 @@ function switchToClassroom() {
         whiteboardSvg.style.display = "none";
         whiteboardText.style.display = "none";
         classroomImage.style.display = "block";
+        speechBubble.style.display = "block";
 
         // Fade overlay back in
         transition.classList.remove("fade-out");
