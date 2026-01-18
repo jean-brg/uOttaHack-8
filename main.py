@@ -11,9 +11,9 @@ from ai_interface import AIModelDefinition, prompt_AI
 
 # The models that will be queried for questioning (as students)
 MODELS = [
-    AIModelDefinition(name="xiaomi/mimo-v2-flash:free", temperature=0.2),
-    AIModelDefinition(name="xiaomi/mimo-v2-flash:free", temperature=0.2),
-    AIModelDefinition(name="xiaomi/mimo-v2-flash:free", temperature=0.2),
+    AIModelDefinition(name="xiaomi/mimo-v2-flash:free", temperature=0.8),
+    AIModelDefinition(name="xiaomi/mimo-v2-flash:free", temperature=0.8),
+    AIModelDefinition(name="xiaomi/mimo-v2-flash:free", temperature=0.8),
     AIModelDefinition(name="deepseek/deepseek-v3.2", temperature=0.2) # Costs $$$
 
     #"google/gemini-3-flash-preview",
@@ -54,6 +54,7 @@ def execute_prompt():
 # Topic Management
 topic = "Basic structure of an atom" # What topic the user is responsible for teaching
 lesson_overview = [] # A list of "subtopics" that the user must cover in order to get a good score
+completed_lesson = [] # Information the user has contributed to far to their lesson
 questions = [] # A list of questions asked by each model, anonymized so the master AI isn't biased
 
 def promptAllQuesstions(prompt: str, constraints: str):
@@ -74,6 +75,15 @@ def promptAllQuesstions(prompt: str, constraints: str):
         "total_time": time.time() - init_time #time elapsed for all AI calls
     }
 
+@app.route('/api/post-topic', methods=["POST"])
+def postTopic():
+    # Accepts the topic and generates a lesson overview
+    global topic
+    args = request.get_json()
+    topic = args.get('topic')
+
+    lesson_overview = query_lesson_overview()
+
 @app.route('/api/post-lesson', methods=["POST"])
 def postLesson():
     global questions, lesson_overview, topic
@@ -81,18 +91,17 @@ def postLesson():
     # Save the JSON arguments
     args = request.get_json()
     lesson = args.get('lesson')
-    topic = args.get('topic')
 
     # Clear the stored lesson data
-    lesson_overview = []
+    completed_lesson = []
 
-    # Append the first piece of data to the lesson overview (the user's input)
-    lesson_overview.append(lesson) 
+    # Append the first piece of data to the lesson (the user's input)
+    completed_lesson.append(lesson) 
     
     print(lesson_overview)
 
-    # Prompt all AI models concurrently.
-    question_responses = promptAllQuesstions(f'You are a middle school-level student learning about "${topic}"; The teacher\'s lesson is the following: "${lesson}".\nFind 5 questions to ask the teacher from easy to more challenging to push the teacher with their teaching skills.', constraints="Reply with a list of objects with key 'question' (str) and 'difficulty' (int from 0-3 where 0 is easy). The list should be contained in a single key, 'questions'.")
+    # Prompt all AI models concurrently for questions
+    question_responses = promptAllQuesstions(f'You are a middle school-level student learning about "${topic}"; The teacher\'s lesson is the following: "${lesson}".\nFind 3 questions to ask the teacher from basic to more challenging. It can be further clarification, extended knowledge or even rephrasing.', constraints="Reply with a list of objects with key 'question' (str) and 'difficulty' (int from 0-2 where 0 is easy). The list should be contained in a single key, 'questions'.")
 
     print(question_responses)
 
@@ -102,8 +111,8 @@ def postLesson():
 def query_lesson_overview():
     # Gemini, acting as an expert on the topic, will generate a lesson overview
     response = prompt_AI(
-        prompt=('Generate a short lesson overview in an array for the topic "' + topic + '".'),
-        constraints=('You are an expert on "' + topic + '" teaching at an intermediary level. If you choose to include any math, it should be in KaTeX format, surrounded by $.'),
+        prompt=('Generate a lesson overview in an array for this topic: "' + topic + '".'),
+        constraints=('You are an expert on "' + topic + '" teaching at an intermediary level. If you choose to include any math, it should be in ASCII math format.'),
         model="google/gemini-2.0-flash-lite-001"
     )
 

@@ -58,8 +58,6 @@ def prompt_AI(prompt:str, constraints=None, model="google/gemini-2.0-flash-lite-
             if(not constraints is None):
                 messages.insert(0, { "role": "system", "content": constraints })
 
-            print(messages)
-
             # Query the OpenRouter API using requests
             response = requests.post(
                 url="https://openrouter.ai/api/v1/chat/completions",

@@ -67,7 +67,6 @@ async function submitLesson() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                topic: lesson_topic,
                 lesson: lesson_content
             })
         }
@@ -78,13 +77,14 @@ async function submitLesson() {
 
     // Hide the loading indicators
     loading_icon.style.display = "none"
-    document.querySelector("#questions").innerText = data.questions.join("\n\n");
 
     // Parse the JSON inside the data
     let parseddata = [];
     for(questionarray of data.questions) {
         parseddata.push(JSON.parse(questionarray))
     }
+
+    document.querySelector("#questions").innerText = parseddata.map(obj => obj.questions).flat().map(item => item.question).join("\n\n");
 
     // Store the questions in a global variable -- still indexed in the order of the AI model
     questions = parseddata;
