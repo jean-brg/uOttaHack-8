@@ -20,14 +20,15 @@ MODELS = [
 
     #"google/gemini-3-flash-preview",
     #"anthropic/claude-sonnet-4.5",
-    #"openai/gpt-oss-120b", # Costs $$  ELIMINATED due to refusing instructions
-    #"allenai/molmo-2-8b:free", # Eliminated due to refusing instructions
     #"google/gemini-2.0-flash-lite-001" # Costs $$
 ]
 
 # The model used for mission-critical calculations (rubric lesson plan, question moderation, objective completion)
 MASTER_MODEL = "google/gemini-2.0-flash-lite-001"
 master = AIModelDefinition(MASTER_MODEL, 0)
+
+# How many questions (students) will be asked?
+NUM_Q = 6
 
 # APP INIT
 app = Flask(__name__)
@@ -104,7 +105,7 @@ def postLesson():
 
     sorted_questions = prompt_AI(
         prompt=f"Given the following list of questions, remove duplicate questions. Questions:\n{original_questions}",
-        constraints="Answer in purely in JSON, no intro or anything with: an array of elements, each with the key 'question' and the value being each unique question. Don't add your own keys. If there are more than 6 uniques, pick the best 6",
+        constraints=f"Answer in purely in JSON, no intro or anything with: an array of elements, each with the key 'question' and the value being each unique question. Don't add your own keys. If there are more than ${NUM_Q} uniques, pick the best ${NUM_Q}",
         model=MASTER_MODEL
     )
 
