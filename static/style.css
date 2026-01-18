@@ -282,7 +282,7 @@ body {
 #speechBubble {
     display: none;
     position: fixed;
-    top: -15%;
+    top: 0;
     left: -1px;
     transform: none;
     width: 100%;
@@ -291,6 +291,7 @@ body {
     image-rendering: pixelated;
     z-index: 2;
     opacity: 0.7;
+    margin-top: -10%;
 }
 
 /* Whiteboard SVG arrow button */
