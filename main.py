@@ -3,6 +3,7 @@ from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 # File and data management
 import time
+import json
 # Threads
 from concurrent.futures import ThreadPoolExecutor
 
@@ -14,7 +15,7 @@ MODELS = [
     AIModelDefinition(name="xiaomi/mimo-v2-flash:free", temperature=0.8),
     AIModelDefinition(name="xiaomi/mimo-v2-flash:free", temperature=0.8),
     AIModelDefinition(name="xiaomi/mimo-v2-flash:free", temperature=0.8),
-    AIModelDefinition(name="deepseek/deepseek-v3.2", temperature=0.2) # Costs $$$
+    # AIModelDefinition(name="deepseek/deepseek-v3.2", temperature=0.2) # Costs $$$
 
     #"google/gemini-3-flash-preview",
     #"anthropic/claude-sonnet-4.5",
@@ -57,7 +58,7 @@ lesson_overview = [] # A list of "subtopics" that the user must cover in order t
 completed_lesson = [] # Information the user has contributed to far to their lesson
 questions = [] # A list of questions asked by each model, anonymized so the master AI isn't biased
 
-def promptAllQuesstions(prompt: str, constraints: str):
+def promptAllQuestions(prompt: str, constraints: str):
     # Save the initial time
     init_time = time.time()
 
@@ -98,15 +99,26 @@ def postLesson():
     # Append the first piece of data to the lesson (the user's input)
     completed_lesson.append(lesson) 
     
-    print(lesson_overview)
+    # print(lesson_overview)
 
     # Prompt all AI models concurrently for questions
-    question_responses = promptAllQuesstions(f'You are a middle school-level student learning about "${topic}"; The teacher\'s lesson is the following: "${lesson}".\nFind 3 questions to ask the teacher from basic to more challenging. It can be further clarification, extended knowledge or even rephrasing.', constraints="Reply with a list of objects with key 'question' (str) and 'difficulty' (int from 0-2 where 0 is easy). The list should be contained in a single key, 'questions'.")
+    question_responses = promptAllQuestions(f'You are a middle school-level student learning about "${topic}"; The teacher\'s lesson is the following: "${lesson}".\nFind 3 questions to ask the teacher from basic to more challenging. It can be further clarification, extended knowledge or even rephrasing.', constraints="Reply with a list of objects with key 'question' (str) and 'difficulty' (int from 0-2 where 0 is easy). The list should be contained in a single key, 'questions'.")
 
     print(question_responses)
 
+    # Extract the questions from the responses
     questions = question_responses['questions']
-    return jsonify(question_responses)
+
+    sorted_questions = prompt_AI(
+        prompt=f"Given the following list of questions, could you remove duplicate questions. Questions:\n{questions}",
+        constraints="Answer in purely in JSON, no intro or anything with: an array of elements, each with the key 'question' and the value being each unique question. Don't add your own keys. If there are more than 6 uniques, pick the best 6"
+    )
+
+    parsed_questions = json.loads(sorted_questions["message"])
+
+    print(parsed_questions)
+
+    return jsonify(parsed_questions)
 
 def query_lesson_overview():
     # Gemini, acting as an expert on the topic, will generate a lesson overview
