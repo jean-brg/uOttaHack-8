@@ -128,6 +128,22 @@ section {
     animation: bobble 2s ease-in-out infinite;
 }
 
+#topic_input {
+    position: absolute;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 30px;
+    font-size: 14px;
+    text-align: center;
+    border: 2px solid #4a2f1a;
+    background-color: transparent;
+    color: white;
+    border-radius: 4px;
+    outline: none;
+}
+
 .door-btn {
     position: absolute;
     top: 50%;
