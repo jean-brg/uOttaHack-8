@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-color: #d4a574;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Math formulas background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><text x="10" y="50" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(15 50 50)">1+1=2</text><text x="150" y="200" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(-25 200 200)">4×4=16</text><text x="800" y="100" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(45 850 120)">9-3=6</text><text x="50" y="500" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(-35 100 500)">2³=8</text><text x="700" y="600" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(20 750 600)">√16=4</text><text x="300" y="750" font-size="24" fill="rgba(0,0,0,0.12)" transform="rotate(-50 350 750)">dy/dx</text><text x="600" y="300" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(60 650 320)">∫x²dx</text><text x="200" y="850" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(-15 250 850)">∑n</text><text x="900" y="500" font-size="24" fill="rgba(0,0,0,0.12)" transform="rotate(35 950 520)">log(x)</text><text x="400" y="100" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(-45 450 120)">sin(θ)</text><text x="100" y="300" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(70 150 320)">cos(θ)</text><text x="750" y="400" font-size="26" fill="rgba(0,0,0,0.12)" transform="rotate(-60 800 420)">tan(θ)</text><text x="500" y="150" font-size="24" fill="rgba(0,0,0,0.12)" transform="rotate(30 550 170)">∂f/∂x</text><text x="350" y="500" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(-70 400 520)">e^x</text><text x="650" y="750" font-size="28" fill="rgba(0,0,0,0.12)" transform="rotate(40 700 770)">π</text></svg>');
+            background-size: cover;
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #stamp-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .splatter {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #stamp {
+            position: absolute;
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-weight: bold;
+            font-size: 60px;
+            color: #ff0000;
+            font-family: Arial, sans-serif;
+            letter-spacing: 8px;
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+            animation: stampDrop 0.8s ease-out forwards;
+            z-index: 10;
+        }
+
+        @keyframes stampDrop {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -200%) rotate(-15deg) scale(0.5);
+            }
+            70% {
+                opacity: 1;
+                transform: translate(-50%, -50%) rotate(-15deg) scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) rotate(-15deg) scale(1);
+            }
+        }
+
+        .ink-splatter {
+            animation: splat 0.6s ease-out forwards;
+        }
+
+        @keyframes splat {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            100% {
+                opacity: 0.7;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="stamp-container">
+        <!-- Stack of papers behind -->
+        <div style="position: absolute; top: 65px; left: 50%; transform: translateX(-50%) translateX(15px) rotateZ(2deg); width: 550px; height: calc(100vh - 100px); background-color: #efefef; border: 2px solid #333; box-sizing: border-box; border-radius: 2px; z-index: 0;"></div>
+        <div style="position: absolute; top: 80px; left: 50%; transform: translateX(-50%) translateX(-15px) rotateZ(-2deg); width: 550px; height: calc(100vh - 100px); background-color: #e5e5e5; border: 2px solid #333; box-sizing: border-box; border-radius: 2px; z-index: 0;"></div>
+
+        <!-- Main Paper/Document -->
+        <div id="paper" style="position: absolute; top: 50px; left: 50%; transform: translateX(-50%); width: 550px; height: calc(100vh - 100px); background-color: #e6e6e6; border: 2px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.3); box-sizing: border-box; border-radius: 2px; z-index: 2;">
+            <!-- Holes on left side -->
+            <div style="position: absolute; left: 15px; top: 0; width: 10px; height: 100%; background-image: radial-gradient(circle, #999 5px, #999 5px), repeating-linear-gradient(to bottom, transparent 0px, transparent 60px, white 60px, white 72px); background-size: 10px 72px; background-position: 0 0; background-repeat: repeat-y;"></div>
+            <!-- Lined paper pattern -->
+            <div style="width: 100%; height: 100%; padding: 40px 30px 40px 50px; box-sizing: border-box; background-image: repeating-linear-gradient(transparent, transparent 29px, #d0d0d0 29px, #d0d0d0 30px); position: relative;"></div>
+        </div>
+
+        <svg id="stamp" viewBox="0 0 200 200" width="200" height="200">
+            <!-- Stamp circle background -->
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#ff0000" stroke-width="8" opacity="0.8"/>
+            <circle cx="100" cy="100" r="70" fill="none" stroke="#ff0000" stroke-width="3" opacity="0.6"/>
+            <!-- Stamp text -->
+            <text x="107" y="122" font-size="50" font-weight="bold" text-anchor="middle" fill="#ff0000" font-family="Arial, sans-serif">A+</text>
+        </svg>
+    </div>
+
+    <script>
+        function createSplatter(x, y) {
+            const splatterSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            splatterSvg.setAttribute('viewBox', '0 0 100 100');
+            splatterSvg.setAttribute('width', '150');
+            splatterSvg.setAttribute('height', '150');
+            splatterSvg.classList.add('splatter', 'ink-splatter');
+            splatterSvg.style.left = x + 'px';
+            splatterSvg.style.top = y + 'px';
+
+            // Create random splatter pattern
+            const colors = ['#ff0000', '#ff3333', '#cc0000'];
+            const splatCount = Math.random() * 8 + 8;
+            
+            for (let i = 0; i < splatCount; i++) {
+                const angle = (Math.PI * 2 * i) / splatCount + (Math.random() - 0.5) * 0.5;
+                const distance = 30 + Math.random() * 30;
+                const x = 50 + Math.cos(angle) * distance;
+                const y = 50 + Math.sin(angle) * distance;
+                const size = Math.random() * 15 + 5;
+                
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+                circle.setAttribute('r', size);
+                circle.setAttribute('fill', colors[Math.floor(Math.random() * colors.length)]);
+                circle.setAttribute('opacity', Math.random() * 0.7 + 0.3);
+                
+                splatterSvg.appendChild(circle);
+            }
+
+            document.getElementById('stamp-container').appendChild(splatterSvg);
+
+            // Remove splatter after animation
+            setTimeout(() => splatterSvg.remove(), 600);
+        }
+
+        function dropStamp() {
+            const stamp = document.getElementById('stamp');
+            const paper = document.getElementById('paper');
+            const container = document.getElementById('stamp-container');
+            
+            // Get paper position
+            const paperRect = paper.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            
+            const x = paperRect.left - containerRect.left + paperRect.width - 120;
+            const y = paperRect.top - containerRect.top + 100;
+
+            stamp.style.left = x + 'px';
+            stamp.style.top = y + 'px';
+
+            // Create splatters around the stamp
+            setTimeout(() => {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        const offsetX = (Math.random() - 0.5) * 150;
+                        const offsetY = (Math.random() - 0.5) * 150;
+                        createSplatter(x + offsetX, y + offsetY);
+                    }, i * 100);
+                }
+            }, 400);
+        }
+
+        // Drop stamp when page loads
+        window.addEventListener('load', dropStamp);
+    </script>
+</body>
+</html>

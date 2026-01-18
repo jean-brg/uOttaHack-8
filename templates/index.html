@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
     <title>Teacher AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Home Page</h1>
+    <div id="loading-screen">
+    <div id="loading-text">Loading.</div>
+</div>
+    <div class="door">
+        <h1 class="door-title">Teacher AI</h1>
 
-    <button onclick="getData()">Get Data</button>
+        <button class="door-btn" onclick="enterDoor()">BEGIN</button>
 
-    <p id="display"></p>
+        <p id="display"></p>
+    </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <div id="transition"></div>
+    <img id="room-image" src="{{ url_for('static', filename='sprites/whiteboard.png') }}">
+    <textarea id="whiteboard-text" placeholder="Write here..."></textarea>
+    <img id="buttonsec" src="{{ url_for('static', filename='sprites/button.png')}}" onclick="buttonsecclick()">
+
+    <img id="classroom-image" src="{{ url_for('static', filename='sprites/classroom.png') }}">
+
+    <img id="speechBubble" src="{{ url_for('static', filename='sprites/speechBubble.png') }}">
+
+    <svg id="whiteboard-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" onclick="switchToClassroom()"><title>arrow-top-right-circle</title><path d="M21 7V15H20V17H19V18H18V19H17V20H15V21H7V20H5V19H4V18H3V17H2V15H1V7H2V5H3V4H4V3H5V2H7V1H15V2H17V3H18V4H19V5H20V7H21M17 6V5H16V4H14V3H8V4H6V5H5V6H4V8H3V14H4V16H5V17H6V18H8V19H14V18H16V17H17V16H18V14H19V8H18V6H17M8 7H15V14H13V11H12V12H11V13H10V14H9V15H8V14H7V13H8V12H9V11H10V10H11V9H8V7Z" /></svg>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>   
+
 </body>
 </html>
