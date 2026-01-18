@@ -42,33 +42,41 @@ function enterDoor() {
     }, 600);
 }
 
-function switchToClassroom() {
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function switchToClassroom() {
     const transition = document.getElementById("transition");
     const roomImage = document.getElementById("room-image");
     const classroomImage = document.getElementById("classroom-image");
     const whiteboardSvg = document.getElementById("whiteboard-svg");
     const whiteboardText = document.getElementById("whiteboard-text");
+
     // Start fade overlay
     transition.classList.remove("fade-in");
     transition.classList.add("fade-out");
 
-    setTimeout(() => {
-        // Swap to classroom
-        document.querySelector(".door-title").innerText = "ROOM 2";
-        document.getElementById("display").innerText = "You entered the classroom!";
-        roomImage.style.display = "none";
-        whiteboardSvg.style.display = "none";
-        whiteboardText.style.display = "none";
-        classroomImage.style.display = "block";
+    await wait(600); // wait for fade-out to complete
 
-        // Fade overlay back in
-        transition.classList.remove("fade-out");
-        transition.classList.add("fade-in");
-    }, 600);
-    
+    // Swap to classroom
+    document.querySelector(".door-title").innerText = "ROOM 2";
+    document.getElementById("display").innerText = "You entered the classroom!";
+    roomImage.style.display = "none";
+    whiteboardSvg.style.display = "none";
+    whiteboardText.style.display = "none";
+    classroomImage.style.display = "block";
 
+    // Fade overlay back in
+    transition.classList.remove("fade-out");
+    transition.classList.add("fade-in");
 
+    // Show loading screen
+    showLoadingScreen();
+    await wait(3000); // show it for 3 seconds
+    hideLoadingScreen();
 }
+
 let students = [];
 class Student {
     constructor(eleid, name,top,left,width,imgpath) {
@@ -100,3 +108,26 @@ class Student {
         document.body.appendChild(this.imgpath);
     }
 }
+
+let loadingInterval;
+
+function showLoadingScreen() {
+    const loadingScreen = document.getElementById("loading-screen");
+    const loadingText = document.getElementById("loading-text");
+    let dots = 1;
+
+    loadingScreen.style.display = "flex";
+
+    // Animate dots
+    loadingInterval = setInterval(() => {
+        dots = dots % 3 + 1; // cycle 1 → 2 → 3 → 1
+        loadingText.textContent = "Loading" + ".".repeat(dots);
+    }, 500);
+}
+
+function hideLoadingScreen() {
+    const loadingScreen = document.getElementById("loading-screen");
+    clearInterval(loadingInterval);
+    loadingScreen.style.display = "none";
+}
+
