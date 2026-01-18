@@ -78,7 +78,7 @@ def promptAllQuesstions(prompt: str, constraints: str):
 @app.route('/api/post-topic', methods=["POST"])
 def postTopic():
     # Accepts the topic and generates a lesson overview
-    global topic
+    global topic, lesson_overview
     args = request.get_json()
     topic = args.get('topic')
 
