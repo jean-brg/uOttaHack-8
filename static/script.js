@@ -79,10 +79,10 @@ async function submitLesson() {
     loading_icon.style.display = "none"
 
     // Each element will be sent to the student's speech 
-    document.querySelector("#questions").innerText = data.map(d => d.question).join("\n\n")
+    document.querySelector("#questions").innerText = data.map(q => q.question).join("\n\n")
 
     // Store the questions in a global variable
-    questions = parseddata;
+    questions = data;
     
-    return parseddata;
+    return questions;
 }
