@@ -155,7 +155,7 @@ def query_lesson_score():
 
     score = master.prompt(
         message=(f'Grade the following performance. The user was tasked with teaching the following topic: "${topic}". They initially provided the following lesson: "${lessonstring}". Afterwards, they were asked the following questions and gave the corresponding answers: ${questionsstring}. Provide a grade and feedback, considering lesson/answer accuracy, detail and relevancy. The grade is made up of 50% lesson and 50% questions. Be fair, grade should reflect performance.'),
-        constraints=("Reply in JSON with three fields, 'percentage_grade' float between 0 and 1, 'letter_grade' (one of 'A+' (0.9 to 1), 'A' (0.85 to 0.9),'B' (0.7 to 0.85), 'C' (0.6 to 0.7), 'D' (0.5 to 0.6), or 'F' (0 to 0.5)) and 'feedback', an array of 4 strings containing bullet-point feedback.  Do not add additional fields. The top level should be an object, not an array. Be direct in your feedback and make it relevant to the grade.")
+        constraints=("Reply in JSON with three fields, 'percentage_grade' float between 0 and 1, 'letter_grade' (one of 'A+' (0.9 to 1), 'A' (0.85 to 0.9),'B' (0.7 to 0.85), 'C' (0.6 to 0.7), 'D' (0.5 to 0.6), or 'F' (0 to 0.5)) and 'feedback', an array of 5 strings containing bullet-point feedback.  Do not add additional fields. The top level should be an object, not an array. Be direct in your feedback and make it relevant to the grade.")
     )
 
     scoreout = json.loads(score['message'])

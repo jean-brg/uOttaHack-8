@@ -109,11 +109,12 @@ section {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 320px;
-    height: 600px;
-    background-image: url("/static/sprites/door.svg");
+    background-image: url(/static/sprites/door.svg);
     background-size: cover;
     z-index: 10;
+
+    height: 85%;
+    aspect-ratio: 9 / 16;
 }
 
 .door-title {
@@ -133,16 +134,21 @@ section {
     top: 200px;
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;
+    width: 80%;
     height: 30px;
     font-size: 14px;
     text-align: center;
     border: 2px solid #4a2f1a;
-    background-color: transparent;
-    color: white;
+    background-color: #a8a8a894;
+    color: black;
     border-radius: 4px;
     outline: none;
     font-family: consolas;
+}
+
+#topic_input::placeholder {
+    color: black;
+    font-style: italic;
 }
 
 .door-btn {
@@ -205,7 +211,7 @@ section {
 
 @keyframes bobble {
     0% { transform: translateY(0); }
-    50% { transform: translateY(-14px); }
+    50% { transform: translateY(-10px); }
     100% { transform: translateY(0); }
 }
 
@@ -225,11 +231,11 @@ section {
 
 .whiteboard-container {
     display: inline-block;
-    width: 90%;
+    width: 85%;
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -55%);
 }
 
 #whiteboard {

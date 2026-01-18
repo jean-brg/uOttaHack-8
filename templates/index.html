@@ -22,7 +22,7 @@
                     Choose your <br />
                     topic:
                 </h3>
-                <input type="text" id="topic_input" name="topic_input" value="The basic atomic model" placeholder="The basic atomic model" />
+                <input type="text" id="topic_input" name="topic_input" value="The basic atomic model" list="suggestions" placeholder="The basic atomic model" />
                 <button class="door-btn" onclick="setTopic()">BEGIN</button>
                 <p id="display"></p>
             </div>
@@ -80,3 +80,10 @@
     <script src="{{ url_for('static', filename='script.js') }}"></script>   
 </body>
 </html>
+<datalist id="suggestions">
+    <option>The basic atomic model</option>
+    <option>Intro to JavaScript</option>
+    <option>The water cycle</option>
+    <option>What is a satellite</option>
+    <option>How does an election work</option>
+</datalist>
