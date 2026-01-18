@@ -15,7 +15,7 @@ function enterDoor() {
 
     const btn = document.querySelector(".door-btn");
     const roomImage = document.getElementById("room-image");
-
+    const newbutton = document.getElementById("buttonsec").style.display = "block";
     btn.disabled = true;
 
     // Start fade overlay
@@ -39,3 +39,16 @@ function enterDoor() {
         setTimeout(() => btn.disabled = false, 600);
     }, 600);
 }
+
+class Student { 
+    constructor(eleid,name,path) {
+      this.name = name;
+      this.pngpath = path; 
+      this.domm = null;
+      
+    }
+    draw() {
+        console.log("ill do this later")
+    }
+}
+

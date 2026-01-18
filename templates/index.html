@@ -19,7 +19,7 @@
     <div id="transition"></div>
     <img id="room-image" src="{{ url_for('static', filename='sprites/whiteboard.png') }}" style="display:none; position:absolute; top:5%; left:10%; width:80%; height:auto; image-rendering:pixelated; z-index:1;">
     <textarea id="whiteboard-text" placeholder="Write here..." style="display:none; position:absolute; top:18%; left:18%; width:64%; height:50%; z-index:2; background:transparent; border:none; resize:none; outline:none; font-family:'Press Start 2P', monospace; font-size:13px; line-height:1.8; color:#1b1b1b;"></textarea>
-
+    <img id="buttonsec" src="{{ url_for('static', filename='sprites/button.png')}}" style = "display:none; position:absolute; top:70%; left:75%; width:5%; height:auto; image-rendering:pixelated; z-index:1; transform: rotate(90deg);"> 
 
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>   
