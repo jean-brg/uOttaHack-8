@@ -11,6 +11,10 @@ CORS(app)
 def home():
     return render_template("index.html")
 
+@app.route("/page3")
+def page3():
+    return render_template("page3.html")
+
 @app.route('/api/data', methods=['GET'])
 def get_data():
     result = {"message": "Connected to Python!"}
