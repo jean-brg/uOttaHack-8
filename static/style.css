@@ -287,7 +287,7 @@ body {
     transform: translateX(-50%);
     width: 100vw;
     height: auto;
-    object-fit: cover;
+    object-fit: contain;
     object-position: top;
     max-height: 55vh;
     image-rendering: pixelated;
