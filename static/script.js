@@ -15,7 +15,7 @@ function enterDoor() {
 
     const btn = document.querySelector(".door-btn");
     const roomImage = document.getElementById("room-image");
-    const newbutton = document.getElementById("buttonsec").style.display = "block";
+
     btn.disabled = true;
 
     // Start fade overlay
@@ -25,10 +25,11 @@ function enterDoor() {
 
     setTimeout(() => {
         // Swap content behind the door
-        document.querySelector(".door-title").innerText = "ROOM 2";
-        document.getElementById("display").innerText = "You entered a new room!";
-        document.body.style.backgroundColor = "#2a2a2a";
+        document.querySelector(".door-title").innerText = "ROOM 1";
+        document.getElementById("display").innerText = "You entered the whiteboard room!";
+        document.body.style.backgroundColor = "#c2b280";
         roomImage.style.display = "block";
+        document.getElementById("whiteboard-svg").style.display = "block";
 
 
         // Fade overlay back in
@@ -39,18 +40,3 @@ function enterDoor() {
         setTimeout(() => btn.disabled = false, 600);
     }, 600);
 }
-function buttonsecclick() {
-    console.log("pressed")
-}
-class Student { 
-    constructor(eleid,name,path) {
-      this.name = name;
-      this.pngpath = path; 
-      this.domm = null;
-      
-    }
-    draw() {
-        console.log("ill do this later")
-    }
-}
-
